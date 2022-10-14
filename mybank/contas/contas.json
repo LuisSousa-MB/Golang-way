@@ -1,0 +1,7 @@
+{
+    "titular":{"Nome":"Bruno", "Cpf": "9485948592948", "Profissao":"Testador"},
+    "NumAgencia": 4589, 
+    "NumConta": 92858783, 
+    "Operacao": 2,
+    "saldo": 100
+}

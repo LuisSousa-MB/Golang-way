@@ -1,0 +1,84 @@
+https://www.linkedin.com - online:true StatusCode: 200
+Data: 28/09/2022 10:48:14
+________________________________________________________
+https://www.linkedin.com - online:true StatusCode: 200
+Data: 28/09/2022 10:48:31
+________________________________________________________
+https://www.facebook.com - online:true StatusCode: 200
+Data: 28/09/2022 10:48:32
+________________________________________________________
+https://www.linkedin.com - online:true StatusCode: 200
+Data: 28/09/2022 10:48:49
+________________________________________________________
+https://www.facebook.com - online:true StatusCode: 200
+Data: 28/09/2022 10:48:50
+________________________________________________________
+https://www.twitter.com - online:true StatusCode: 200
+Data: 28/09/2022 10:48:52
+________________________________________________________
+https://www.linkedin.com - online:true StatusCode: 200
+Data: 28/09/2022 10:52:05
+________________________________________________________
+https://www.facebook.com - online:true StatusCode: 200
+Data: 28/09/2022 10:52:12
+________________________________________________________
+https://www.twitter.com - online:true StatusCode: 200
+Data: 28/09/2022 10:52:14
+________________________________________________________
+https://www.linkedin.com - online:true StatusCode: 200
+Data: 28/09/2022 10:53:32
+________________________________________________________
+https://www.facebook.com - online:true StatusCode: 200
+Data: 28/09/2022 10:53:43
+________________________________________________________
+https://www.twitter.com - online:true StatusCode: 200
+Data: 28/09/2022 10:53:45
+________________________________________________________
+https://www.linkedin.com - online:true StatusCode: 200
+Data: 28/09/2022 10:54:42
+________________________________________________________
+https://www.linkedin.com - online:true StatusCode: 200
+Data: 28/09/2022 10:54:58
+________________________________________________________
+https://www.facebook.com - online:true StatusCode: 200
+Data: 28/09/2022 10:54:59
+________________________________________________________
+https://www.twitter.com - online:true StatusCode: 200
+Data: 28/09/2022 10:55:01
+________________________________________________________
+https://www.linkedin.com - online:true StatusCode: 200
+Data: 28/09/2022 10:56:03
+________________________________________________________
+https://www.facebook.com - online:true StatusCode: 200
+Data: 28/09/2022 10:56:04
+________________________________________________________
+https://www.twitter.com - online:true StatusCode: 200
+Data: 28/09/2022 10:56:06
+________________________________________________________
+https://www.linkedin.com - online:true StatusCode: 200
+Data: 28/09/2022 19:39:43
+________________________________________________________
+https://www.linkedin.com - online:true StatusCode: 200
+Data: 28/09/2022 19:40:49
+________________________________________________________
+https://www.linkedin.com - online:true StatusCode: 200
+Data: 28/09/2022 19:45:31
+________________________________________________________
+https://www.linkedin.com - online:true StatusCode: 200
+Data: 28/09/2022 19:52:03
+________________________________________________________
+https://www.facebook.com - online:true StatusCode: 200
+Data: 28/09/2022 19:52:09
+________________________________________________________
+https://www.linkedin.com - online:true StatusCode: 200
+Data: 28/09/2022 19:53:05
+________________________________________________________
+https://www.linkedin.com - online:true StatusCode: 200
+Data: 28/09/2022 19:53:26
+________________________________________________________
+https://www.facebook.com - online:true StatusCode: 200
+Data: 28/09/2022 19:53:28
+________________________________________________________
+https://www.twitter.com - online:true StatusCode: 200
+Data: 28/09/2022 19:53:30
+________________________________________________________
