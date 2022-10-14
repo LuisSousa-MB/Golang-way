@@ -58,6 +58,19 @@ func BuscaAlunoCPF(c *gin.Context) {
 
 }
 
+func BuscaAlunoRg(c *gin.Context) {
+	var aluno models.Aluno
+	rg := c.Param("rg")
+	database.DB.Where(&models.Aluno{RG: rg}).First((&aluno))
+
+	if aluno.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{
+			"Not found": " Aluno não encontrado..."})
+		return
+	}
+	c.JSON(http.StatusOK, aluno)
+}
+
 func DeletaAluno(c *gin.Context) {
 	var aluno models.Aluno
 	id := c.Params.ByName("id")
