@@ -3,6 +3,7 @@ package controllers
 import (
 	"api-rest-gogin/database"
 	"api-rest-gogin/models"
+	"fmt"
 
 	"net/http"
 
@@ -23,6 +24,11 @@ func Saudacao(c *gin.Context) { //caputra a informação do endpoint e retorna u
 func CriaNovoAluno(c *gin.Context) {
 	var aluno models.Aluno // criando uma variavel do tipo aluno para armazenar o conteudo a ser registrado do db
 	if err := c.ShouldBindJSON(&aluno); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error()})
+		return
+	}
+	if err := models.ValidaDadosAluno(&aluno); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error()})
 		return
@@ -86,7 +92,13 @@ func EditaAluno(c *gin.Context) {
 			"erro": err.Error()})
 		return
 	}
+	if err := models.ValidaDadosAluno(&aluno); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error()})
+		return
+	}
 
-	database.DB.Model(&aluno).UpdateColumns(aluno)
+	database.DB.Model(&models.Aluno{}).Where("id = ?", aluno.ID).UpdateColumns(aluno)
 	c.JSON(http.StatusOK, aluno)
+	fmt.Println("Isto é aluno:", aluno)
 }
