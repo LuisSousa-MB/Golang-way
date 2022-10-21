@@ -1,0 +1,5 @@
+*GOLANG UPDATE VERSION
+
+1- sudo git clone https://github.com/udhos/update-golang
+2- cd update-golang
+3- sudo ./update-golang.sh

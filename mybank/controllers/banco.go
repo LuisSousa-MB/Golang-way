@@ -1,26 +1,21 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
-	"projects/mybank/db"
-	"strconv"
-	"text/template"
+
+	"github.com/gin-gonic/gin"
 )
 
-var temp = template.Must(template.ParseGlob("templates/*.html"))
-
-func Index(w http.ResponseWriter, r *http.Request) {
-
-	temp.ExecuteTemplate(w, "Index", nil)
-
+func Index(c *gin.Context) {
+	c.HTML(http.StatusOK, "index.html", nil)
 }
-func Autenticar(w http.ResponseWriter, r *http.Request) {
+
+/* func Autenticar(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		cpf := r.FormValue("CPF")
 		pass := r.FormValue("typePasswordX")
 
-		db := db.ConectaComBancoDeDados()
+		db := db()
 
 		passCheck, err := db.Query("select senha from cliente where cpf=$1", cpf)
 
@@ -52,3 +47,4 @@ func Autenticar(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
+*/

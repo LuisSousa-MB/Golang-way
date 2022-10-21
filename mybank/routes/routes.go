@@ -1,11 +1,14 @@
 package routes
 
 import (
-	"net/http"
-	"projects/mybank/controllers"
+	"mybank/controllers"
+
+	"github.com/gin-gonic/gin"
 )
 
-func CarregarRotas() {
-	http.HandleFunc("/", controllers.Index)
-	http.HandleFunc("/authentic", controllers.Autenticar)
+func HandleRequests() {
+	r := gin.Default()
+	r.LoadHTMLGlob("templates/*")
+	r.Static("/assets", "./assets")
+	r.GET("/index", controllers.Index)
 }

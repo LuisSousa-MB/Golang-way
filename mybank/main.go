@@ -2,13 +2,9 @@ package main
 
 import (
 	"fmt"
-	"net/http"
+	"mybank/database"
+	"mybank/routes"
 	"os"
-	conta "projects/mybank/contas"
-	"projects/mybank/routes"
-
-	cliente "projects/mybank/clientes"
-
 	"time"
 )
 
@@ -17,21 +13,11 @@ var deposito float64
 var transferencia float64
 
 func main() {
-
-	routes.CarregarRotas()
-
-	http.ListenAndServe(":8000", nil)
+	database.ConectaComDB()
+	routes.HandleRequests()
 }
 func standby() {
 
-	clienteBruno := cliente.Titular{Nome: "Bruno", Cpf: "143.353.134.34", Profissao: "Desenvolvedor Go"}
-	contaBruno := conta.ContaPoupanca{Titular: clienteBruno, NumAgencia: 334, NumConta: 135313, Operacao: 13}
-
-	/* contaDoHenrique := ContaCorrente{"Henrique", 345, 4924985, 394.94}
-
-	fmt.Println("\nNome do Titular:", contaDoHenrique.Titular, "\nNúmero da agência:", contaDoHenrique.numAgencia, "\nNúmero da conta:",
-		contaDoHenrique.numConta, "\n\nsaldo:", contaDoHenrique.saldo, "\n_____________________________")
-	*/
 	for {
 
 		fmt.Println("\n1 - Acessar uma conta\n2 - Cadastrar nova conta")
@@ -52,7 +38,7 @@ func standby() {
 
 					switch comando {
 					case 1:
-						contaBruno.Exibirsaldo()
+						fmt.Println("Exibir saldo")
 					case 2:
 						fmt.Println("\nInforme o valor que deseja sacar:")
 						fmt.Scan(&saque)
@@ -84,12 +70,12 @@ func standby() {
 				fmt.Scan(&opcao)
 
 				if opcao == 1 {
-					novaConta := conta.ContaCorrente{}
-					novaConta.CadNovaConta()
+					/* novaConta := models.ContaCorrente{}
+					novaConta.CadNovaConta() */
 					break
 				} else if opcao == 2 {
-					novaConta := conta.ContaPoupanca{}
-					novaConta.CadNovaConta()
+					/* novaConta := models.ContaPoupanca{}
+					novaConta.CadNovaConta() */
 					break
 				} else {
 					fmt.Println("Opção inválida")

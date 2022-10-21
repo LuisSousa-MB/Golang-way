@@ -30,6 +30,7 @@ func CriaAlunoMock() {
 	database.DB.Create(&aluno)
 	fmt.Println("Criado aluno ID:", aluno.ID)
 	ID = int(aluno.ID)
+	CPF = string(aluno.CPF)
 }
 func DeletaAlunoMock() {
 	var aluno models.Aluno
@@ -90,6 +91,7 @@ func TestBuscaAlunoPorCPF(t *testing.T) {
 
 }
 func TestAlunoPorIdHandler(t *testing.T) {
+	log.Println("\nTestando a busca de alunos por ID:")
 	database.ConectaComDB()
 	CriaAlunoMock()
 	defer DeletaAlunoMock()
@@ -112,6 +114,7 @@ func TestAlunoPorIdHandler(t *testing.T) {
 
 }
 func TestDeletaAlunoHandler(t *testing.T) {
+	log.Println("\nTestando o DELETE de alunos:")
 	database.ConectaComDB()
 	CriaAlunoMock()
 	r := SetupDasRotas()
@@ -125,9 +128,10 @@ func TestDeletaAlunoHandler(t *testing.T) {
 
 }
 func TestEditaAlunoHandler(t *testing.T) {
+	log.Println("\nTestando o UPDATE de alunos:")
 	database.ConectaComDB()
 	CriaAlunoMock()
-	//defer DeletaAlunoMock()
+	defer DeletaAlunoMock()
 	r := SetupDasRotas()
 	r.PATCH("/alunos/:id", controllers.EditaAluno)
 	aluno := models.Aluno{
@@ -139,10 +143,13 @@ func TestEditaAlunoHandler(t *testing.T) {
 	alunoJson, _ := json.Marshal(aluno)
 	req, _ := http.NewRequest("PATCH", pathBuscaID, bytes.NewBuffer(alunoJson))
 	resposta := httptest.NewRecorder()
-	fmt.Println("Enviando + bytes:", bytes.NewBuffer(alunoJson))
+	//fmt.Println("Enviando + bytes:", bytes.NewBuffer(alunoJson))
 	r.ServeHTTP(resposta, req)
 	var alunoMockEditado models.Aluno
 	json.Unmarshal(resposta.Body.Bytes(), &alunoMockEditado)
-	fmt.Println("resp", resposta.Body)
-
+	//fmt.Println("resp", resposta)
+	//fmt.Println("mock", alunoMockEditado)
+	assert.Equal(t, alunoMockEditado.CPF, aluno.CPF, "O CPF não foi alterado")
+	assert.Equal(t, alunoMockEditado.Nome, aluno.Nome, "O Nome não foi alterado")
+	assert.Equal(t, alunoMockEditado.RG, aluno.RG, "O RG não foi alterado")
 }

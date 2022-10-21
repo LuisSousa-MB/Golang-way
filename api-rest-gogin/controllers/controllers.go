@@ -3,7 +3,6 @@ package controllers
 import (
 	"api-rest-gogin/database"
 	"api-rest-gogin/models"
-	"fmt"
 
 	"net/http"
 
@@ -98,7 +97,17 @@ func EditaAluno(c *gin.Context) {
 		return
 	}
 
-	database.DB.Model(&models.Aluno{}).Where("id = ?", aluno.ID).UpdateColumns(aluno)
+	database.DB.Model(&models.Aluno{}).Where("id = ?", id).UpdateColumns(aluno)
 	c.JSON(http.StatusOK, aluno)
-	fmt.Println("Isto é aluno:", aluno)
+	//fmt.Println("Isto é aluno:", aluno)
+}
+func ExibePagIndex(c *gin.Context) {
+	var alunos []models.Aluno
+	database.DB.Find(&alunos)
+	c.HTML(http.StatusOK, "index.html", gin.H{
+		"alunos": alunos,
+	})
+}
+func Limbo(c *gin.Context) {
+	c.HTML(http.StatusNotFound, "404.html", nil)
 }
