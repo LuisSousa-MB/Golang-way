@@ -14,10 +14,11 @@ func GeradorDePersonagem(name string) *models.IPersonagem { //Publica. Gerencia 
 }
 func randomizadorPersonagem() (name string, hp, mp, poder, forca, agilidade, level, xp int) { // Cria de maneira randomica o nome e os atributos para o personagem
 	rand.Seed(time.Now().UnixNano())
-	names := [30]string{"Gobu", "Taos", "Bekye", "Cyeno", "Geada", "Ankey", "Wuema", "Rofes", "Pezea",
+	names := []string{"Gobu", "Taos", "Bekye", "Cyeno", "Geada", "Ankey", "Wuema", "Rofes", "Pezea",
 		"Tetel", "Cles", "Tifaytal", "Zeage", "Keate", "Lupia", "Ulel", "Curumu", "Rulas", "Caferius", "Sebasth", "Lorpheus", "Mizandre", "Saujin",
 		"Luna", "Partenes", "Teféia", "Zanza", "Penlia", "Aziane", "Garrata"}
-	nameRand := rand.Intn(len(names))
+	//fmt.Println("tamanho array: ", len(names))
+	nameRand := rand.Intn(len(names) - 1)
 	name = names[nameRand]
 	hp = 200 + rand.Intn(200)
 	mp = 0
