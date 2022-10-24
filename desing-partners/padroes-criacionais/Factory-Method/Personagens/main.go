@@ -7,7 +7,7 @@ import (
 
 func main() {
 	fmt.Println("Gerador de personagem")
-	novoPersongem := controller.GeradorDePersonagem("teste")
+	novoPersongem := controller.GeradorDePersonagem()
 	controller.ExibePersonagem(*novoPersongem)
 
 }

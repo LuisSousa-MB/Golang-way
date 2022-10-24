@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func GeradorDePersonagem(name string) *models.IPersonagem { //Publica. Gerencia a ordem das funções, cria e retorna o personagem.
+func GeradorDePersonagem() *models.IPersonagem { //Publica. Gerencia a ordem das funções, cria e retorna o personagem.
 	fmt.Println("Gerando novo personagem...")
 	novoPersongem := defineClasse(randomizadorPersonagem())
 	return novoPersongem
