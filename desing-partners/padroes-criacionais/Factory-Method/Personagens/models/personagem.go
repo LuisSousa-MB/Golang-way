@@ -1,6 +1,10 @@
 package models
 
+import "gorm.io/gorm"
+
 type IPersonagem interface {
+	SetID(id uint)
+	SetDefesa(defesa int)
 	SetClass(class string)
 	SetName(name string)
 	SetHP(hp int)
@@ -19,13 +23,22 @@ type IPersonagem interface {
 	GetAgilidade() int
 	GetLevel() int
 	GetXP() int
+	GetID() uint
+	GetDefesa() int
 }
 
 type Personagem struct {
-	Class, Name                                string
-	HP, MP, Poder, Forca, Agilidade, Level, XP int
+	gorm.Model
+	Class, Name                                        string
+	Defesa, HP, MP, Poder, Forca, Agilidade, Level, XP int
 }
 
+func (p *Personagem) SetID(id uint) {
+	p.ID = id
+}
+func (p *Personagem) GetID() uint {
+	return p.ID
+}
 func (p *Personagem) SetClass(class string) {
 	p.Class = class
 }
@@ -80,4 +93,10 @@ func (p *Personagem) GetLevel() int {
 }
 func (p *Personagem) GetXP() int {
 	return p.XP
+}
+func (p *Personagem) SetDefesa(defesa int) {
+	p.Defesa = defesa
+}
+func (p *Personagem) GetDefesa() int {
+	return p.Defesa
 }
