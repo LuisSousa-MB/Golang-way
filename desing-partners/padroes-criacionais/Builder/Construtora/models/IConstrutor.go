@@ -6,7 +6,7 @@ type IConstrutor interface {
 	SetEstiloDoPiso()
 	SetEstiloDePorta()
 	SetQuantidadeDeAndares()
-	SetChamine(adicionar bool)
+	SetChamine()
 	GetConstrucao() Construcao
 }
 

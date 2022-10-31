@@ -1,8 +1,7 @@
 package models
 
 type ConstrutorNormal struct {
-	TipoDeJanela, TipoDePorta, Chamine, TipoPiso string
-	Andares, Janelas                             int
+	Construcao
 }
 
 func novoConstrutorNormal() *ConstrutorNormal {
@@ -18,17 +17,13 @@ func (c *ConstrutorNormal) SetEstiloDoPiso() {
 	c.TipoPiso = "Porcelanato" // implementar
 }
 func (c *ConstrutorNormal) SetQuantidadeDeAndares() {
-	c.Andares = 2
+	c.QuantidadeDeAndares = 2
 }
 func (c *ConstrutorNormal) SetQuantidadeJanelas() {
-	c.Janelas = 8
+	c.QuantidadeDeJanelas = 8
 }
-func (c *ConstrutorNormal) SetChamine(adicionar bool) {
-	if adicionar == true {
-		c.Chamine = "SIM"
-	} else {
-		c.Chamine = "NÃO"
-	}
+func (c *ConstrutorNormal) SetChamine() {
+	c.Chamine = "SIM"
 }
 func (c *ConstrutorNormal) GetConstrucao() Construcao {
 	return Construcao{
@@ -36,7 +31,7 @@ func (c *ConstrutorNormal) GetConstrucao() Construcao {
 		TipoDeJanela:        c.TipoDeJanela,
 		TipoPiso:            c.TipoPiso,
 		Chamine:             c.Chamine,
-		QuantidadeDeJanelas: c.Janelas,
-		QuantidadeDeAndares: c.Andares,
+		QuantidadeDeJanelas: c.QuantidadeDeJanelas,
+		QuantidadeDeAndares: c.QuantidadeDeAndares,
 	}
 }

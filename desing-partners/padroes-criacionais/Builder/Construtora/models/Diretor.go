@@ -12,8 +12,8 @@ func NovoDiretor(c IConstrutor) *Diretor {
 func (d *Diretor) SetConstrutor(c IConstrutor) {
 	d.Construtor = c
 }
-func (d *Diretor) Construir(adicionarChamine bool) Construcao {
-	d.Construtor.SetChamine(adicionarChamine)
+func (d *Diretor) Construir() Construcao {
+	d.Construtor.SetChamine()
 	d.Construtor.SetEstiloDeJanelas()
 	d.Construtor.SetQuantidadeDeAndares()
 	d.Construtor.SetQuantidadeJanelas()

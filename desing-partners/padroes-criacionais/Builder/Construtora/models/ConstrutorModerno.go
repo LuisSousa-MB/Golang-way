@@ -1,8 +1,7 @@
 package models
 
 type ConstrutorModerno struct {
-	TipoDeJanela, TipoDePorta, Chamine, TipoPiso string
-	Andares, Janelas                             int
+	Construcao
 }
 
 func novoConstrutorModerno() *ConstrutorModerno {
@@ -18,17 +17,13 @@ func (c *ConstrutorModerno) SetEstiloDoPiso() {
 	c.TipoPiso = "Marmore indiano" // implementar
 }
 func (c *ConstrutorModerno) SetQuantidadeDeAndares() {
-	c.Andares = 4
+	c.QuantidadeDeAndares = 4
 }
 func (c *ConstrutorModerno) SetQuantidadeJanelas() {
-	c.Janelas = 12
+	c.QuantidadeDeJanelas = 12
 }
-func (c *ConstrutorModerno) SetChamine(adicionar bool) {
-	if adicionar == true {
-		c.Chamine = "SIM"
-	} else {
-		c.Chamine = "NÃO"
-	}
+func (c *ConstrutorModerno) SetChamine() {
+	c.Chamine = "NÃO"
 }
 func (c *ConstrutorModerno) GetConstrucao() Construcao {
 	return Construcao{
@@ -36,7 +31,7 @@ func (c *ConstrutorModerno) GetConstrucao() Construcao {
 		TipoDeJanela:        c.TipoDeJanela,
 		TipoPiso:            c.TipoPiso,
 		Chamine:             c.Chamine,
-		QuantidadeDeJanelas: c.Janelas,
-		QuantidadeDeAndares: c.Andares,
+		QuantidadeDeJanelas: c.QuantidadeDeJanelas,
+		QuantidadeDeAndares: c.QuantidadeDeAndares,
 	}
 }

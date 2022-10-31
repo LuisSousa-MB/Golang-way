@@ -10,7 +10,7 @@ func main() {
 	construtorModerno := models.GetConstrutor("Moderno")
 
 	diretor := models.NovoDiretor(construtorNormal)
-	construcaoNormal := diretor.Construir(false)
+	construcaoNormal := diretor.Construir()
 
 	fmt.Printf("Tipo de porta da construção: %s\n", construcaoNormal.TipoDePorta)
 	fmt.Printf("Tipo de janelas da construção: %s\n", construcaoNormal.TipoDeJanela)
@@ -20,7 +20,7 @@ func main() {
 	//fmt.Printf("Chaminé:\n", construcaoNormal.Chamine)
 
 	diretor.SetConstrutor(construtorModerno)
-	construcaoModerna := diretor.Construir(true)
+	construcaoModerna := diretor.Construir()
 	fmt.Println()
 	fmt.Printf("Tipo de porta da construção: %s\n", construcaoModerna.TipoDePorta)
 	fmt.Printf("Tipo de janelas da construção: %s\n", construcaoModerna.TipoDeJanela)
