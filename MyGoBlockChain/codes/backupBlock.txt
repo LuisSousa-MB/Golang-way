@@ -1,0 +1,126 @@
+package codes
+
+import (
+	"fmt"
+	"runtime"
+	"strconv"
+	"strings"
+	"time"
+)
+
+var Miners int = int(runtime.NumCPU())
+
+type Block struct {
+	Index, Nonce       int
+	PreviousHash, Hash string
+	TimeStamp          time.Time
+	Data               Data
+}
+
+func (c *Chain) GerarMineradores(miners int) {
+	//var wg sync.WaitGroup
+
+	for i := 0; i < miners; i++ {
+		go func() {
+			c.Minerar()
+		}()
+	}
+}
+
+func (c *Chain) Minerar() {
+
+	// var wg sync.WaitGroup
+
+	var hashs []string
+	unlock := UnlockHash(dificuldade)
+	fmt.Println(unlock)
+	NewBlock.Nonce = 0
+	NewBlock.TimeStamp = time.Now()
+	NewBlock.PreviousHash = c.Instance[len(c.Instance)-1].Hash
+	numHashs := 0
+
+	NewBlock.Data.Transactions = TxPoll.Transactions
+	fmt.Println("Block transactions:", NewBlock.Data.Transactions)
+	transactions := NewBlock.Data.Transactions
+	var txstrings string
+	for i := 0; i < len(transactions); i++ {
+		txstrings += string(transactions[i].Sender)
+		txstrings += string(transactions[i].Receiver)
+		txstrings += string(transactions[i].Msg)
+		txstrings += string(transactions[i].TimeStamp)
+		txstrings += string(transactions[i].Hash)
+		txstrings += fmt.Sprintf("%f", (transactions[i].Value))
+
+	}
+
+	for i := 0; i < 1; {
+		NewBlock.Nonce++
+		passString := strconv.Itoa(NewBlock.Index) + strconv.Itoa(NewBlock.Nonce) + NewBlock.PreviousHash + NewBlock.TimeStamp.Format(time.UnixDate) + txstrings
+		fmt.Println("sending passString: ", passString)
+		NewBlock.Hash = GenerateHashByte(passString)
+		numHashs++
+		//fmt.Println("tam hashs: ", len(hashs))
+		for _, e := range hashs {
+			if e == NewBlock.Hash {
+				fmt.Println("Repeat hash")
+				time.Sleep(time.Second * 10)
+			}
+		}
+		hashs = append(hashs, NewBlock.Hash)
+		fmt.Println("tam hashs: ", len(hashs))
+
+		testHash := NewBlock.Hash[:len(NewBlock.Hash)-(64-1-dificuldade)]
+		unlockString := strings.Join(unlock, "")
+		fmt.Printf("minerando...\nHash: %s\nTest Hash: %s,\n unlock: %s\n", NewBlock.Hash, testHash, unlockString)
+		if testHash == unlockString {
+			i++
+		}
+
+	}
+	fmt.Println("Hashs gerados: ", numHashs)
+
+}
+
+func (c *Chain) GerarBlock(dificuldade int) {
+	now := time.Now()
+	c.GerateGenesisBlock()
+	c.Minerar()
+	duration := time.Since(now)
+	fmt.Println("time elapse:", duration /* , int(duration.Hours()), " hours ", int(duration.Minutes()), " minutes ", int(duration.Seconds()), " seconds." */)
+	NewBlock.Index = len(c.Instance) + 1
+	//fmt.Println("Pool:", TxPoll)
+
+	TxPoll.Transactions = TxPoll.Transactions[:0]
+	c.Instance = append(c.Instance, NewBlock)
+	time.Sleep(time.Second * 5)
+}
+func UnlockHash(dificuldade int) []string {
+	var key []string
+	findedGO := false
+	for i := 0; i < dificuldade; i++ {
+		for _, e := range key {
+			if e == "Go" {
+				findedGO = true
+			}
+		}
+		if findedGO {
+			key = append(key, "0")
+
+		} else {
+			key = append(key, "Go")
+
+		}
+	}
+	return key
+}
+func ShowBlockInfo() {
+	var numBlock int
+	fmt.Println("Informe o Index do block para vizualizar:")
+	fmt.Scan(&numBlock)
+	if numBlock <= len(NewChain.Instance) {
+		NewChain.PrintBlock(numBlock - 1)
+	} else {
+		fmt.Println("Bloco não encontrado...")
+		time.Sleep(time.Second * 2)
+	}
+}
