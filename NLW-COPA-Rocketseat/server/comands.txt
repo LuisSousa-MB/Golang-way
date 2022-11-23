@@ -1,0 +1,15 @@
+
+
+
+instalar prisma generator/ 
+
+    npm i prisma-erd-generator @mermaid-js/mermaid-cli -D (desenvolvimento)
+
+instalar Fastify cors
+
+    npm i @fastify/cors // Seguraça (Quais aplicações podem acessar o back-end)
+
+Vizualizar BD no navegador com o prisma
+
+    npx prisma studio
+

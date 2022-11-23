@@ -4,10 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"runtime"
-	"sync"
 )
-
-var mu sync.Mutex
 
 func main() {
 
@@ -15,16 +12,15 @@ func main() {
 	quit := make(chan bool)
 
 	var jackPot bool
-	//miners := int(runtime.NumCPU())
+	miners := int(runtime.NumCPU())
 
 	unlockNumber := 777
 
-	for i := 0; i < 900; i++ {
+	for i := 0; i < miners; i++ {
 		go func(miner int) {
 			jackPot = false
 
 			for i := 0; i < 1; {
-				mu.Lock()
 				if jackPot == false {
 
 					fmt.Println("Minerador:", miner)
@@ -36,10 +32,10 @@ func main() {
 						jackPot = true
 						i++
 					} else {
+						fmt.Println("...", luckNumber)
 						numbers <- luckNumber
 
 					}
-					mu.Unlock()
 					runtime.Gosched()
 
 				} else {
@@ -57,6 +53,6 @@ func main() {
 	}()
 
 	for n := range numbers {
-		fmt.Println("...", n)
+		fmt.Println(n)
 	}
 }

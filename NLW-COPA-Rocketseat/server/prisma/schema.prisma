@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+//Commands
+//npm prisma migrate dev  ------> detecta a criação de uma nova tabela
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Pool {
+  id String @id @default(cuid())
+  titulo String
+  code String @unique //code para compartilhar bolao (unico)
+  createdAt DateTime @default(now())
+
+}
