@@ -76,7 +76,9 @@ func (c *Chain) Minerar() {
 					//fmt.Println("tam hashs: ", len(hashs))
 					hashsChan <- NewBlock.Hash
 					if testHash == unlockString {
-						fmt.Println("Miner", miner, "\nsending passString: ", passString)
+						fmt.Println("________________________________________________________________________________________________\n",
+							"Miner", miner, "\nsending passString: ", passString,
+							"\n________________________________________________________________________________________________")
 						//fmt.Println("Hash encontrado pelo minerador ", miner)
 						i++
 						findedHash = true
@@ -117,6 +119,7 @@ func (c *Chain) GerarBlock(dificuldade int) {
 	c.Minerar()
 	duration := time.Since(now)
 	fmt.Println("time elapse:", duration /* , int(duration.Hours()), " hours ", int(duration.Minutes()), " minutes ", int(duration.Seconds()), " seconds." */)
+	fmt.Println()
 	NewBlock.Index = len(c.Instance) + 1
 	//fmt.Println("Pool:", TxPoll)
 
@@ -149,6 +152,7 @@ func ShowBlockInfo() {
 	fmt.Scan(&numBlock)
 	if numBlock <= len(NewChain.Instance) {
 		NewChain.PrintBlock(numBlock - 1)
+		time.Sleep(time.Second * 3)
 	} else {
 		fmt.Println("Bloco não encontrado...")
 		time.Sleep(time.Second * 2)

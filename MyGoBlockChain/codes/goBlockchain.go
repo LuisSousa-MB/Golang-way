@@ -150,7 +150,7 @@ func (c *Chain) PrintData(i int) {
 }
 func (c *Chain) PrintBlock(i int) {
 	var sTimestamp string
-	fmt.Println("Index:", NewChain.Instance[i].Index)
+	fmt.Println("Block Index:", NewChain.Instance[i].Index)
 	fmt.Println("Nonce:", NewChain.Instance[i].Nonce)
 	fmt.Println("Hash:", NewChain.Instance[i].Hash)
 	fmt.Println("Previous Hash:", NewChain.Instance[i].PreviousHash)
@@ -159,7 +159,7 @@ func (c *Chain) PrintBlock(i int) {
 	//fmt.Println("Data:", NewChain.Instance[i].Data)
 	fmt.Println("Data:")
 	NewChain.PrintData(i)
-	fmt.Println("_______________________________________________")
+	fmt.Println("________________________________________________________________________________________________")
 
 }
 func IsValid() {
@@ -241,8 +241,9 @@ func ShowOpenTransactions() {
 		fmt.Println("\tValor: ", TxPoll.Transactions[j].Value)
 		fmt.Println("\tData: ", TxPoll.Transactions[j].TimeStamp)
 		fmt.Println("\tHash: ", TxPoll.Transactions[j].Hash)
-		fmt.Println("_______________________________________________________")
+		fmt.Println("________________________________________________________________________________________________")
 	}
+	time.Sleep(time.Second * 3)
 }
 
 func SetDificult() {
@@ -258,6 +259,11 @@ func SetDificult() {
 }
 func PrintChain() {
 	tamanho := len(NewChain.Instance)
+	if tamanho == 0 {
+		fmt.Println("Blockchain has not been initialized")
+		time.Sleep(time.Second * 3)
+		return
+	}
 	fmt.Println(NewChain.Instance)
 	fmt.Println()
 	for i := 0; i < tamanho; i++ {
