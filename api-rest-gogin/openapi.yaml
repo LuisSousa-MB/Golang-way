@@ -1,0 +1,152 @@
+openapi: 3.0.1
+info: 
+  title: Api teste para cadastro de alunos
+  description: Api de teste de modelagem para documentação de API´s no Swagger.
+  version: 0.0.1
+  termsOfService: https://policies.google.com/terms?hl=pt-BR&fg=1
+  contact:
+    name: Suport Devs
+    email: contato@example.com
+    url: www.example.com
+  license:  
+    name: "Licença: GPLv3"
+    url: https://www.gnu.org/licenses/gpl-3.0.html
+externalDocs:
+  description: Documentação do Swagger /example
+  url: https://swagger.io/docs/open-source-tools/swagger-editor/  
+servers: 
+- url: http://localhost:8080
+  description: Api de teste para cadastro de alunos rodando no localhost.
+paths:
+  /alunos:
+    get:
+      summary: Recupera todos os alunos cadastrados no banco de dados.
+      responses:
+        200:
+          description: Sucesso! 
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/alunos"
+        404:
+          description: fail...
+      security:
+      - authy: []
+    post:
+      summary: Cria um novo aluno.
+      requestBody:
+        content:
+          application/json:
+              schema: 
+                type: object
+                properties:
+                    nome:
+                      type: string
+                    cpf:
+                      type: string
+                    rg:
+                      type: string
+          
+        description: "É necessario enviar um objeto do tipo aluno no corpo da request."
+      description: "Através desse endpoint pode ser criado novos alunos."
+      responses:
+        201:
+          description: Sucesso!
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/aluno"
+
+  /alunos/{ID}:
+    parameters: 
+      - name: ID
+        in: path
+        schema:
+          type: integer
+        required: true
+    get:
+      summary: Recupera aluno pelo id.
+      responses:
+        200:
+          $ref: "#/components/responses/sucess"
+        404:
+          description: fail...
+          content:
+            application/json:
+              example: "Not Found"
+    delete:
+      summary: Deleta o aluno referenciado pelo id.
+      responses:
+        200:
+          description: Sucesso!
+        404:
+          description: fail...
+          content:
+            application/json:
+              example: "Not Found"
+    patch:
+      summary: Update do aluno referenciado pelo id.
+      requestBody:
+        content:
+          application/json:
+              schema: 
+                $ref: "#/components/schemas/insert_aluno"
+          
+        description: "É necessario enviar um objeto do tipo aluno no corpo da request."
+      description: "Através desse endpoint pode ser editado os dados dos alunos."
+      responses:
+        201:
+          description: Sucesso!
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/aluno"
+      
+components:
+  schemas:
+    aluno:
+      type: object
+      properties:
+          ID:
+            type: integer
+          CreatedAt:
+            type: string
+          UpdatedAt:
+            type: string
+          DeletedAt:
+            type: string
+          nome:
+            type: string
+          cpf:
+            type: string
+          rg:
+            type: string
+    alunos:
+      type: array
+      items:
+        $ref: "#/components/schemas/aluno"
+    insert_aluno:
+      type: object
+      properties:
+        nome:
+          type: string
+        cpf:
+          type: string
+        rg:
+          type: string
+          
+  responses:
+    sucess:
+      description: Sucesso!
+      content:
+        application/json:
+          schema: 
+            $ref: "#/components/schemas/aluno"
+  
+  securitySchemes:
+    authy:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      
+      
