@@ -1,0 +1,191 @@
+basePath: /api/v4
+definitions:
+  httputil.HTTPError:
+    properties:
+      code:
+        example: 4
+        type: integer
+        description: error code generated when trying to perform the request
+      message:
+        description: Error message generated when trying to perform the request
+        example: "Internal Server Error (error when searching for quotation: LTC)"
+        type: string
+    type: object
+  schema.QuoteBuyRequestSchema:
+    properties:
+      coin:
+        type: string
+        example: LTC
+        description: Symbol of the cryptocurrency to be quoted
+      fiat_amount:
+        type: string
+        example: "100"
+        description: Amount of fiat currency BRL for quotation
+      source:
+        type: string
+        example: web
+        description: Request source (web/ios/android)
+    required:
+    - coin
+    - fiat_amount
+    - source
+    type: object
+  schema.QuoteBuyResponseSchema:
+    properties:
+      id:
+        type: integer
+        example: 33
+        description: Quotation record identifier
+      coin:
+        type: string
+        example: "LTC"
+        description: Symbol of the quoted cryptocurrency
+      coin_price:
+        type: string
+        example: "102.04081632"
+        description: Cryptocurrency unit value against fiat BRL
+      fiat_amount:
+        type: string
+        example: "100"
+        description: Amount quoted of fiat currency BRL
+      fee_fiat_amount:
+        type: string
+        example: "0.99"
+        description: Fee amount in fiat BRL over the quoted amount
+      fiat_amount_with_fee:
+        type: string
+        example: "99.01"
+        description: Amount in fiat BRL already taxed
+      estimated_coin_amount:
+        type: string
+        example: "0.970298"
+        description: Estimated value in conversion from fiat BRL to the specified cryptocurrency
+    type: object
+info:
+  contact:
+    email: contato@mercadobitcoin.com.br
+    name: API Support
+    url: https://suporte.mercadobitcoin.com.br
+  description: |-
+    # Overview
+
+    Service responsible for applying dynamic fee and spreed rates by user
+    groups on buy-side and sell-side market order quotes for customers using the simplified
+    retail experience.
+
+    Before using Mercado Bitcoin's APIs, plase consult [here](https://www.mercadobitcoin.com.br/termo-de-uso-apis) the provisions of the API's Terms of Service.
+    ### Endpoint
+    All requests is made with `/api/v4` context.
+
+    ### WebSocket API
+    If you are looking for WebSocket API documentation [click here](https://ws.mercadobitcoin.net/docs/v0)
+
+    # Errors
+
+    ### Domain error examples
+
+    Our errors will have a pattern on every invalid request return
+
+    In them you will identify a mapping of information that will tell you the location of the error and the specific error, as well as a description to better describe the error.
+
+    `DOMAIN` = Error domain
+
+    e.g: TRADING(Trading services)
+
+    `MODULE` = Use case that is running
+
+    e.g: GET_ORDER(search endpoint of order by id)
+
+    `ERROR` = Specific error caused on request
+
+    e.g: ORDER_NOT_FOUND(id used for search does not exist in our base)
+
+    Response status code: `400`
+
+    Response body payload
+    ```json
+    {
+    "code": "TRADING|GET_ORDER|ORDER_NOT_FOUND",
+    "message": "This order_id not found"
+    }
+    ```
+
+    ### Possible errors return
+
+    Error | Description
+    ----------|-------------
+    API_UNAVAILABLE | API temporarily disabled
+    FORBIDDEN | Invalid login or password
+
+    ### Forbidden error example
+
+    Response status code: `403`
+
+    Response body payload
+    ```json
+    {
+    "code": "API|FORBIDDEN",
+    "message": "You need to be authenticated"
+    }
+    ```
+
+    ### Internal server error example
+
+    Response status code: `500`
+
+    Response body payload
+    ```json
+    {
+    "code": "API|INTERNAL_SERVER_ERROR",
+    "message": "An unexpected error has occurred"
+    }
+    ```
+
+    # Authentication
+    ### Password Bearer
+    This flow uses login and password to authenticate a user. Username and password
+    are sent as parameters to the [/authorize](#tag/Authorize) endpoint.
+
+    The username refers to `API token id` and password to `API token secret`.
+
+    You must generate an API token id and secret on MercadoBitcoin platform. Follow this link:
+
+    https://suporte.mercadobitcoin.com.br/hc/pt-br/articles/360040781391-Como-gerar-uma-chave-de-API
+
+    If the username and password are valid, then the server issues an access token (`ACCESS_TOKEN`)
+    and returns it in the response. The access token is sent with every request in the Authorization header.
+  title: Caronte API
+  version: 1.1.0
+  x-logo:
+    altText: MercadoBitcoin
+    backgroundColor: '#FFFFFF'
+    url: https://static.mercadobitcoin.com.br/web/img/logos/mb/main-logo-color.svg
+paths:
+  /user/{user_hash}/quote/buy:
+    post:
+      description: Purchase quote request for cryptocurrency and specified amount in fiat
+        currency BRL.
+        Generates a purchase quote and returns a json object with the cryptocurrency
+        value, fees and quantity in proportion to the value specified in the request
+        body.
+      parameters:
+      - description: Request template
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.QuoteBuyRequestSchema'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.QuoteBuyResponseSchema'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Quote Buy
+
+swagger: "2.0"

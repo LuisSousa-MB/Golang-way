@@ -1,0 +1,253 @@
+basePath: /index
+definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+        example: 2022-10-14T11:12:21.152534-03:00
+
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  httputil.HTTPError:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: status bad request
+        type: string
+    type: object
+  models.Aluno:
+    properties:
+      cpf:
+        type: string
+        example: 1234567890X
+      createdAt:
+        type: string
+        example: 2022-10-14T11:12:21.152534-03:00
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+        example: 123
+      nome:
+        type: string
+        example: Sophia
+      rg:
+        type: string
+        example: 12341234X
+      updatedAt:
+        type: string
+        example: 2022-10-14T11:12:21.152534-03:00
+    type: object
+  models.AlunoPostReq:
+    properties:
+      cpf:
+        type: string
+        example: 1234567890X
+      nome:
+        type: string
+        example: Sophia
+      rg:
+        type: string
+        example: 12341234X
+
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: contato@example.com
+    name: Suport Devs
+    url: http://www.exemplo.com
+  description: Api de teste de modelagem para documentação de API´s no Swagger.
+  license:
+    name: 'Licença: GPLv3'
+    url: https://www.gnu.org/licenses/gpl-3.0.html
+  termsOfService: https://policies.google.com/terms?hl=pt-BR&fg=1
+  title: Exemplo para teste do Swagger
+  version: 0.0.1
+  x-logo:
+    altText: MercadoBitcoin
+    backgroundColor: '#FFFFFF'
+    url: https://static.mercadobitcoin.com.br/web/img/logos/mb/main-logo-color.svg
+paths:
+  /alunos:
+    get:
+      description: Rota que recupera e exibe todos os alunos cadastrados no db test.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Aluno'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Recupera e exibe alunos.
+      tags:
+      - Alunos
+    post:
+      description: Rota que cria um novo aluno a partir de parâmetros do tipo objeto
+        json e salva no db.
+      parameters:
+      - description: Modelo de Aluno
+        in: body
+        name: aluno
+        required: true
+        schema:
+          $ref: '#/definitions/models.AlunoPostReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Aluno'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Cria um novo aluno.
+      tags:
+      - Alunos
+  /alunos/{ID}:
+    delete:
+      description: Rota que deleta um aluno do db a partir de seu ID passado através
+        da URL.
+      parameters:
+      - description: ID do Aluno
+        in: path
+        name: ID
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Sucesso!
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Deleta o aluno do db.
+      tags:
+      - Alunos
+    get:
+      description: Rota que recupera e exibe  um aluno a partir do ID passado (URL/path).
+      parameters:
+      - description: ID do Aluno
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Aluno'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Recupera e exibe aluno a partir do ID.
+      tags:
+      - Alunos
+    patch:
+      description: Rota que edita os dados de um aluno a partir de seu ID passado
+        através da URL.
+      parameters:
+      - description: ID do Aluno
+        in: path
+        name: ID
+        required: true
+        type: integer
+      - description: Modelo de Aluno
+        in: body
+        name: aluno
+        required: true
+        schema:
+          $ref: '#/definitions/models.AlunoPostReq'
+      responses:
+        "200":
+          description: Sucesso!
+          schema:
+            $ref: '#/definitions/models.Aluno'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Edita os dados do aluno.
+      tags:
+      - Alunos
+  /alunos/cpf/{CPF}:
+    get:
+      description: Rota que recupera e exibe  um aluno a partir do CPF passado (URL/path).
+      parameters:
+      - description: CPF do Aluno
+        in: path
+        name: CPF
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Aluno'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Recupera e exibe aluno a partir do CPF.
+      tags:
+      - Alunos
+  /alunos/rg/{RG}:
+    get:
+      description: Rota que recupera e exibe  um aluno a partir do RG passado (URL/path).
+      parameters:
+      - description: RG do Aluno
+        in: path
+        name: RG
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Aluno'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Recupera e exibe aluno a partir do RG.
+      tags:
+      - Alunos
+  /index:
+    get:
+      description: Rota que recupera a pagina principal com dados dos alunos cadastrados
+        no sistemab.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Aluno'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Pagina principal de alunos.
+      tags:
+      - Alunos
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"

@@ -233,6 +233,9 @@ func RegisterTransaction() {
 	TxPoll.Transactions = append(TxPoll.Transactions, Tx)
 }
 func ShowOpenTransactions() {
+	if len(TxPoll.Transactions) == 0 {
+		fmt.Println("No transactions")
+	}
 	for j := 0; j < len(TxPoll.Transactions); j++ {
 		fmt.Println()
 		fmt.Println("\tRemetente: ", TxPoll.Transactions[j].Sender)
@@ -243,7 +246,7 @@ func ShowOpenTransactions() {
 		fmt.Println("\tHash: ", TxPoll.Transactions[j].Hash)
 		fmt.Println("________________________________________________________________________________________________")
 	}
-	time.Sleep(time.Second * 3)
+	time.Sleep(time.Second * 5)
 }
 
 func SetDificult() {

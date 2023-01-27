@@ -1,0 +1,58 @@
+rada a biblioteca em seu projeto, começaremos a implementar os parâmetros que irão definir a documentação de código. Esses parâmetros entram no código como forma de "comentário" de código (usando "//" no início da linha). Cada parâmetro é iniciado com o caractere "@". A Título de exemplo, irei mostrar aqui os mais básicos. Fica como sugestão, verificar a lista desses parâmetros na documentação do Swagger:
+
+No arquivo principal "main.go" do seu projeto, adicione no início
+
+// @title Swagger Example API
+// @version 1.0
+// @description This is a sample server celler server.
+Alterando as referidas informações após cada parâmetro.
+
+Em seguida, nos arquivos onde estão definidos os Controllers, antes de cada Método, adicione:
+
+// ShowAccount godoc
+// @Summary Show a account
+// @Description get string by ID
+// @ID get-string-by-int
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Account ID"
+Onde após cada parâmetro (palavra iniciada pelo "@"), deve-se descrever os dados do respectivo método.
+
+Por fim, Executando a linha de comando
+
+swag init
+Um arquivo chamado "doc.json" será gerado na pasta "./doc" dentro da pasta do seu projeto, onde dentro do mesmo estará o conteúdo da documentação, com base nos parâmetros inseridos no Controller e no arquivo principal do projeto ("main.go").
+
+
+
+Ativando um Servidor para visualização do Documento
+Para que seja possível a visualização do documento e, ao mesmo tempo, se tenha a possiblidade de testar/executar cada método, é possível criar e ativar um servidor web para fornecer acesso a essas informações neste padrão.
+
+Para quem usa a biblioteca Gin (framework web para construção de APIs escrito em Golang), segue os passos para implementação do Serviço:
+
+No arquivo principal do seu projeto ("main.go") adicione, na função "main" a seguinte implementação:
+  r := gin.Default()
+
+  c := controller.NewController()
+
+  v1 := r.Group("/api/v1")
+	{
+		accounts := v1.Group("/accounts")
+		{
+			accounts.GET(":id", c.ShowAccount)
+			accounts.GET("", c.ListAccounts)
+			accounts.POST("", c.AddAccount)
+			accounts.DELETE(":id", c.DeleteAccount)
+			accounts.PATCH(":id", c.UpdateAccount)
+			accounts.POST(":id/images", c.UploadAccountImage)
+		}
+    }
+	
+  url := ginSwagger.URL("http://localhost:8080/swagger/doc.json")
+  
+  r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler,      url))
+
+  r.Run(":9000")
+
+Considerando que, na implementação acima, um servidor web será iniciado na porta 8080.
+Após executar o projeto, abra o navegador e carregue o seguinte endereço: http://localhost:8080/swagger/index.html

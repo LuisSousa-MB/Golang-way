@@ -13,7 +13,7 @@ func Worker(workerId int, msg chan int) {
 }
 
 func main() {
-
+		
 	msg := make(chan int)
 	for w := 1; w < 1000000; w++ {
 		go Worker(w, msg)

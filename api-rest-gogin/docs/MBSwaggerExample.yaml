@@ -1,0 +1,1620 @@
+basePath: /api/v4
+definitions:
+  AccountResponse:
+    properties:
+      currency:
+        description: Currency of the account.
+        example: BRL
+        type: string
+      currencySign:
+        description: CurrencySign of the account.
+        example: R$
+        type: string
+      id:
+        description: Account identifier (accountId)
+        example: a322205ace882ef800553118e5000066
+        type: string
+      name:
+        description: Name of the account.
+        example: Mercado Bitcoin
+        type: string
+      type:
+        description: Account type.
+        example: live
+        type: string
+    type: object
+  AuthorizeRequest:
+    properties:
+      login:
+        description: Login of user
+        example: 3f786850e387550fdab836ed7e6dc881
+        type: string
+      password:
+        description: Password of user
+        example: 0bc78dc658371644f246ce092eea33c156f67a1c3ce01b927578c253bcbf7ecb
+        type: string
+    required:
+    - login
+    - password
+    type: object
+  AuthorizeResponse:
+    properties:
+      access_token:
+        description: Access token acts as a session ID that the application uses for
+          making requests. This token should be protected as if it were user credentials.
+        example: 01GF442ATTVP4M6M0XGHQYT544
+        type: string
+      expiration:
+        description: The time when the token is expired is represented as the number
+          of seconds since the Unix epoch (00:00:00 UTC on 1 January 1970).
+        example: 1666116857
+        type: integer
+    type: object
+  CancelOpenOrdersResponse:
+    properties:
+      crypto:
+        description: Crypto symbol
+        example: BTC
+        type: string
+      fiat:
+        description: Fiat symbol
+        example: BRL
+        type: string
+      order_id:
+        description: Unique order identifier
+        example: "27"
+        type: string
+      order_type:
+        description: |-
+          String constants to describe an order type
+
+          Enum: `limit`, `stoplimit` and `post-only`
+
+          Type  | Description
+          ----------|-------------
+          limit | limit order
+          stoplimit | stoplimit order
+          post-only | post-only order
+        example: limit
+        type: string
+      side:
+        description: |-
+          String constants to describe an order side
+
+          Enum: `BID` and `ASK`
+
+          Side  | Description
+          ----------|-------------
+          BID | purchase (buy) order
+          ASK | sales (sell) order
+        example: BID
+        type: string
+      status:
+        description: Status of request (not order status)
+        example: queued_to_cancel
+        type: string
+    type: object
+  CryptoBalanceResponse:
+    properties:
+      available:
+        description: Available amount
+        example: "1000.00000050"
+        type: string
+      on_hold:
+        description: On hold balance related to open orders
+        example: "300.00000300"
+        type: string
+      symbol:
+        description: Symbol.
+        example: BRL
+        type: string
+      total:
+        description: Total balance (available + on_hold)
+        example: "1300.00000350"
+        type: string
+    type: object
+  Execution:
+    properties:
+      executed_at:
+        description: Executed at timestamp (UTC)
+        example: 1634731027
+        type: number
+      fee_rate:
+        description: Transaction charged fee (%)
+        example: "0.70000000"
+        type: string
+      id:
+        description: Id of transaction
+        example: "16"
+        type: string
+      instrument:
+        description: Instrument symbol in the form BASE-QUOTE(e.g. BTC-BRL)
+        example: BTC-BRL
+        type: string
+      price:
+        description: Executed price
+        example: 500
+        type: number
+      qty:
+        description: Executed quantity (volume)
+        example: "0.001"
+        type: string
+      side:
+        description: Executed side
+        example: buy
+        type: string
+    type: object
+  ListAllOrdersResponse:
+    properties:
+      items:
+        description: Items. List of orders
+        items:
+          $ref: '#/definitions/Orders'
+        type: array
+    type: object
+  OrderBookResponse:
+    properties:
+      asks:
+        description: |-
+          Array of Array of numbers (OrderbookItem)
+          Array of arrays with two string elements - price and volume. It is sorted by price in asc order.
+        example:
+        - "1.0001"
+        - "1.0001"
+        items:
+          type: string
+        type: array
+      bids:
+        description: |-
+          Array of Array of numbers (OrderbookItem)
+          Array of arrays with two string elements - price and volume. It is sorted by price in asc order.
+        example:
+        - "1.0001"
+        - "1.0001"
+        items:
+          type: string
+        type: array
+      timestamp:
+        description: Timestamp when the orderbook was generated
+        type: number
+    type: object
+  OrderResponse:
+    properties:
+      avgPrice:
+        description: Simple average price. For stoplimit orders with no limit order
+          triggered the displayed value will be `0.00000000`.
+        example: 500
+        type: number
+      created_at:
+        description: Date of order creation timestamp (UTC)
+        example: 1636047578
+        type: number
+      executions:
+        description: Executed order transactions
+        items:
+          $ref: '#/definitions/Execution'
+        type: array
+      externalId:
+        description: External Identifier setted by client.
+        example: "1372183"
+        type: string
+      fee:
+        description: Charged volume by fee application
+        example: "0.003"
+        type: string
+      filledQty:
+        description: Filled quantity. For stoplimit orders with no limit order triggered
+          the displayed value will be `0.00000000`.
+        example: "0.001"
+        type: string
+      id:
+        description: Unique order identifier.
+        example: "100"
+        type: string
+      instrument:
+        description: Instrument symbol in the form BASE-QUOTE(e.g. BTC-BRL)
+        example: BTC-BRL
+        type: string
+      limitPrice:
+        description: Limit price used when placing the limit order (not considering
+          fee application)
+        example: 9997
+        type: number
+      qty:
+        description: Volume used when placing the order (not considering fee application)
+        example: "0.01000000"
+        type: string
+      side:
+        description: |-
+          String constants to describe an order side
+
+          Enum: `buy` `sell`
+
+          Side  | Description
+          ----------|-------------
+          buy | purchase order
+          sell | sales order
+        example: buy
+        type: string
+      status:
+        description: |-
+          String constants to describe an order status.
+
+          Enum: `pending` `working` `cancelled` `filled`
+
+          Status  | Description
+          ----------|-------------
+          pending | order is pending to process
+          working | order is created but not fully executed yet
+          cancelled | order is cancelled
+          filled | order is fully executed
+        example: filled
+        type: string
+      stopPrice:
+        description: Stop price trigger used when placing the stop limit order
+        example: 18000
+        type: number
+      triggerOrderId:
+        description: Limit order id created when stop price is achieved.
+        example: "42"
+        type: string
+      type:
+        description: |-
+          String constants to describe an order type
+
+          Enum: `market`, `limit`, `stoplimit` and `post-only`
+
+          Type  | Description
+          ----------|-------------
+          market | market order
+          limit | limit order
+          stoplimit | stoplimit order
+          post-only | post-only order
+        example: limit
+        type: string
+      updated_at:
+        description: Date of last order update timestamp (UTC)
+        example: 1636047578
+        type: number
+    type: object
+  Orders:
+    properties:
+      created_at:
+        description: Date of order creation timestamp (UTC)
+        example: 1636047578
+        type: number
+      filledQty:
+        description: Filled Quantity. For stoplimit orders with no limit order triggered
+          the displayed value will be `0.00000000`.
+        example: "0.001"
+        type: string
+      id:
+        description: Unique order identifier.
+        example: "100"
+        type: string
+      instrument:
+        description: Instrument symbol in the form BASE-QUOTE(e.g. BTC-BRL)
+        example: BTC-BRL
+        type: string
+      limitPrice:
+        description: Limit price used when placing the limit order (not considering
+          fee application)
+        example: 9997
+        type: number
+      qty:
+        description: Volume used when placing the order (not considering fee application)
+        example: "0.001"
+        type: string
+      side:
+        description: |-
+          String constants to describe an order side
+
+          Enum: `buy` `sell`
+
+          Side  | Description
+          ----------|-------------
+          buy | purchase order
+          sell | sales order
+        example: buy
+        type: string
+      status:
+        description: |-
+          String constants to describe an order status.
+
+          Enum: `pending` `working` `cancelled` `filled`
+
+          Status  | Description
+          ----------|-------------
+          pending | order is pending to process
+          working | order is created but not fully executed yet
+          cancelled | order is cancelled
+          filled | order is fully executed
+        example: filled
+        type: string
+      stopPrice:
+        description: Stop price trigger used when placing the stop limit order
+        example: 18000
+        type: number
+      triggerOrderId:
+        description: Limit order id created when stop price is achieved.
+        example: "42"
+        type: string
+      type:
+        description: |-
+          String constants to describe an order type
+
+          Enum: `market`, `limit`, `stoplimit` and `post-only`
+
+          Type  | Description
+          ----------|-------------
+          market | market order
+          limit | limit order
+          stoplimit | stoplimit order
+          post-only | post-only order
+        example: limit
+        type: string
+      updated_at:
+        description: Date of last order update timestamp (UTC)
+        example: 1636047578
+        type: number
+    type: object
+  PlaceOrderRequest:
+    properties:
+      async:
+        description: |-
+          Create an order asynchronously (default `false`)
+
+          If `true` the order status response can be `pending`
+        example: true
+        type: boolean
+      cost:
+        description: Quote currency amount to be spent (used only for orders with
+          type `market` and side `buy`)
+        example: 100
+        type: number
+      externalId:
+        description: External customized order Id
+        example: "134872873"
+        type: string
+      limitPrice:
+        description: Limit price per base currency (used only for orders with type
+          `limit`, `post-only` or `stoplimit`)
+        example: 9997
+        type: number
+      qty:
+        description: Order quantity (volume). Required only if cost is not set
+        example: "0.001"
+        type: string
+      side:
+        description: |-
+          String constants to describe an order side
+
+          Enum: `buy` `sell`
+
+          Side  | Description
+          ----------|-------------
+          buy | purchase order
+          sell | sales order
+        example: buy
+        type: string
+      stopPrice:
+        description: Price that triggers a limit order creation (used only for orders
+          with type `stoplimit`)
+        example: 1000
+        type: number
+      type:
+        description: |-
+          String constants to describe an order type
+
+          Enum: `market`, `limit`, `stoplimit` and `post-only`
+
+          Type  | Description
+          ----------|-------------
+          market | market order
+          limit | limit order
+          stoplimit | stoplimit order
+          post-only | post-only order
+        example: limit
+        type: string
+    type: object
+  PlaceOrderResponse:
+    properties:
+      orderId:
+        description: Unique order identifier
+        example: "100"
+        type: string
+    type: object
+  PositionResponse:
+    properties:
+      avgPrice:
+        description: Simple average price of position trades.
+        example: 380
+        type: number
+      category:
+        description: |-
+          Type of orders
+
+          Type  | Description
+          ----------|-------------
+          limit | limit order
+          post-only | post only order
+          stoplimit | stoplimit order
+        example: limit
+        type: string
+      id:
+        description: Unique order identifier (orderId)
+        example: "27"
+        type: string
+      instrument:
+        description: Instrument symbol in the form BASE-QUOTE (e.g. "BTC-BRL").
+        example: BTC-BRL
+        type: string
+      qty:
+        description: Order quantity (volume)
+        example: "0.001"
+        type: string
+      side:
+        description: |-
+          Side of orders
+
+          Side  | Description
+          ----------|-------------
+          buy | purchase order
+          sell | sales order
+        example: buy
+        type: string
+    type: object
+  TickerResponse:
+    properties:
+      buy:
+        description: The last buy price.
+        example: "160.00000005"
+        type: string
+      date:
+        description: Last update date in nanoseconds.
+        example: 1636107279
+        type: integer
+      high:
+        description: The highest price
+        example: "145.00000001"
+        type: string
+      last:
+        description: The last price.
+        example: "144.07000004"
+        type: string
+      low:
+        description: The lowest price.
+        example: "143.00000002"
+        type: string
+      open:
+        description: The first price.
+        example: "143.00000007"
+        type: string
+      pair:
+        description: Pair name. It is equal to the requested one.
+        example: BTC-BRL
+        type: string
+      sell:
+        description: The last sell price.
+        example: "145.00000006"
+        type: string
+      vol:
+        description: The total volume.
+        example: "84.00100003"
+        type: string
+    type: object
+  TradeResponse:
+    properties:
+      amount:
+        description: Amount of crypt transacted
+        example: "1"
+        type: string
+      date:
+        description: Trade creation date
+        example: 1629989121
+        type: integer
+      price:
+        description: Price of trade
+        example: "15000"
+        type: string
+      tid:
+        description: Trade id
+        example: 2
+        type: integer
+      type:
+        description: Type of trade(buy or sell)
+        example: sell
+        type: string
+    type: object
+  Withdraw:
+    properties:
+      account:
+        description: Account of withdraw (if coin is fiat).
+        example: "3"
+        type: string
+      address:
+        description: Address of withdraw (if coin is crypto).
+        example: akjashdi27dgagsdkag
+        type: string
+      coin:
+        description: Cryptocurrency or fiat, ex BTC, BRL, ETH.
+        example: BTC
+        type: string
+      created_at:
+        description: CreatedAt time of transaction
+        example: "1636047578"
+        type: string
+      description:
+        description: Description of withdraw.
+        example: description example
+        type: string
+      destination_tag:
+        description: Destination of withdraw
+        example: "100000044"
+        type: string
+      fee:
+        description: Fee of withdrawal
+        example: "0.001"
+        type: string
+      id:
+        description: Id of withdrawal transaction
+        example: 1
+        type: number
+      net_quantity:
+        description: NetQuantity for withdraw.
+        example: "1"
+        type: string
+      network:
+        description: Network of withdraw
+        example: stellar
+        type: string
+      quantity:
+        description: Quantity for withdraw.
+        example: "2"
+        type: string
+      status:
+        description: |-
+          Status of withdraw
+
+          Status  | Description
+          ----------|-------------
+          1 | open
+          2 | done
+          3 | canceled
+        example: 1
+        type: integer
+      tx:
+        description: Tx of coin
+        example: "00.1"
+        type: string
+      updated_at:
+        description: UpdatedAt time of transaction
+        example: "1636047578"
+        type: string
+    type: object
+  WithdrawCoinRequest:
+    properties:
+      account_ref:
+        description: If your withdraw is fiat, inform id of bank account.
+        example: 1
+        type: integer
+      address:
+        description: If your withdraw is crypto, inform crypto wallet address.
+        example: kasjdhaiucghajn1ekjhqwdkd
+        type: string
+      description:
+        description: Description withdraw.
+        example: description example
+        type: string
+      destination_tag:
+        description: Address tag from mb
+        type: string
+      network:
+        description: Network withdraw. Network switch only available for USDC symbol,
+          otherwise must be empty.
+        example: stellar
+        type: string
+      quantity:
+        description: Quantity for withdraw.
+        example: "2.5"
+        type: string
+      tx_fee:
+        description: If your withdraw is crypto, inform fee for pay. Check [here](https://api.mercadobitcoin.net/api/v4/docs#tag/Public-Data/paths/~1symbols/get)
+          for correct values.
+        example: "2"
+        type: string
+    type: object
+  prspublicdata.ListCandlesResponse:
+    properties:
+      c:
+        description: Closing price (last trade) in the bucket interval
+        example:
+        - "500.00000000"
+        - "1000.00000000"
+        items:
+          type: string
+        type: array
+      h:
+        description: Highest price during the bucket interval
+        example:
+        - "1000.00000000"
+        - "1000.00000000"
+        items:
+          type: string
+        type: array
+      l:
+        description: Lowest price during the bucket interval
+        example:
+        - "500.00000000"
+        - "300.00000000"
+        items:
+          type: string
+        type: array
+      o:
+        description: Opening price (first trade) in the bucket interval
+        example:
+        - "1000.00000000"
+        - "300.00000000"
+        items:
+          type: string
+        type: array
+      t:
+        description: Bucket start time (UTC)
+        example:
+        - 1652119200
+        - 1652187600
+        items:
+          type: integer
+        type: array
+      v:
+        description: Volume of trading activity during the bucket interval
+        example:
+        - "4.00000000"
+        - "2.00000000"
+        items:
+          type: string
+        type: array
+    type: object
+  prspublicdata.ListSymbolInfoResponse:
+    properties:
+      base-currency:
+        description: Base of symbol
+        example:
+        - CHZ
+        items:
+          type: string
+        type: array
+      currency:
+        description: Quote of symbol
+        example:
+        - BRL
+        items:
+          type: string
+        type: array
+      deposit-minimum:
+        description: Minimum value for deposit
+        example:
+        - "0.02"
+        items:
+          type: string
+        type: array
+      description:
+        description: Description of a symbol. Will be displayed in the chart legend
+          for this symbol.
+        example:
+        - Chiliz
+        items:
+          type: string
+        type: array
+      exchange-listed:
+        description: If is exchange listed
+        example:
+        - true
+        items:
+          type: boolean
+        type: array
+      exchange-traded:
+        description: This symbol is able to trade
+        example:
+        - true
+        items:
+          type: boolean
+        type: array
+      minmovement:
+        description: Minimum price difference between two consecutive orders on the
+          orderbook
+        example:
+        - "0.1"
+        items:
+          type: string
+        type: array
+      pricescale:
+        description: 'Number of decimal digits allowed for the symbol price. It''s
+          presented in the form of a scale. Example: `1000` means 3 decimal digits'
+        example:
+        - 100000000
+        items:
+          type: number
+        type: array
+      session-regular:
+        description: Session that you can trade this symbol
+        example:
+        - 24x7
+        items:
+          type: string
+        type: array
+      symbol:
+        description: This is the name of the symbol. (Base - Quote)
+        example:
+        - CHZ-BRL
+        items:
+          type: string
+        type: array
+      timezone:
+        description: Timezone where symbol is trading
+        example:
+        - America/Sao_Paulo
+        items:
+          type: string
+        type: array
+      type:
+        description: |-
+          Type of symbol
+
+          Enum: `CRYPTO` `FAN_TOKEN` `DIGITAL_ASSET` `UTILITY_TOKEN` `DEFI`
+        example:
+        - CRYPTO
+        items:
+          type: string
+        type: array
+      withdraw-minimum:
+        description: Minimum value for withdrawal
+        example:
+        - "0.001"
+        items:
+          type: string
+        type: array
+      withdrawal-fee:
+        description: Withdrawal fee in mercado bitcoin
+        example:
+        - "0.004"
+        items:
+          type: string
+        type: array
+    type: object
+  share.AssetFee:
+    properties:
+      asset:
+        description: Selected instrument asset (equal to the requested one)
+        example: SOL
+        type: string
+      deposit_minimum:
+        description: Minimum asset quantity for deposit
+        example: "0.004"
+        type: string
+      withdraw_minimum:
+        description: Minimum asset quantity for withdrawal
+        example: "0.001"
+        type: string
+      withdrawal_fee:
+        description: Fee value to cover the transaction costs (matching value with
+          the field "tx_fee" of the [POST/withdrawCoin endpoint](https://api.mercadobitcoin.net/api/v4/docs#tag/Wallet/paths/~1accounts~1{accountId}~1wallet~1{symbol}~1withdraw/post))
+        example: "0.01"
+        type: string
+    type: object
+  share.Deposit:
+    properties:
+      address:
+        description: Address of deposit
+        type: string
+      address_tag:
+        description: Secondary address identifier for coins like XRP.
+        type: string
+      amount:
+        description: Amount of deposit
+        type: string
+      coin:
+        description: Coin of deposit
+        type: string
+      confirmTimes:
+        description: 'Confirmations for deposit X / Y, X = Current, Y = Required (
+          For this coins: "BRL", "BTC", "LTC", "BCH", "XRP", "ETH", the current is
+          not showed )'
+        type: string
+      createdAt:
+        description: CreatedAt time of deposit
+        type: number
+      network:
+        description: Network of deposit
+        type: string
+      origin:
+        description: List of sender addresses
+        items:
+          type: string
+        type: array
+      status:
+        description: Status of deposit created / pending / credited / invalid
+        type: string
+      transaction_id:
+        description: TransactionId of operation on blockchain
+        type: string
+      transferType:
+        description: Type of transfer, internal or external
+        type: string
+    type: object
+host: api.mercadobitcoin.net
+info:
+  contact:
+    email: contato@mercadobitcoin.com.br
+    name: API Support
+    url: https://suporte.mercadobitcoin.com.br
+  description: |-
+    # Overview
+    Before using Mercado Bitcoin's APIs, plase consult [here](https://www.mercadobitcoin.com.br/termo-de-uso-apis) the provisions of the API's Terms of Service.
+    ### Endpoint
+    All requests is made with `/api/v4` context.
+
+    ### WebSocket API
+    If you are looking for WebSocket API documentation [click here](https://ws.mercadobitcoin.net/docs/v0)
+
+    # Errors
+
+    ### Domain error examples
+
+    Our errors will have a pattern on every invalid request return
+
+    In them you will identify a mapping of information that will tell you the location of the error and the specific error, as well as a description to better describe the error.
+
+    `DOMAIN` = Error domain
+
+    e.g: TRADING(Trading services)
+
+    `MODULE` = Use case that is running
+
+    e.g: GET_ORDER(search endpoint of order by id)
+
+    `ERROR` = Specific error caused on request
+
+    e.g: ORDER_NOT_FOUND(id used for search does not exist in our base)
+
+    Response status code: `400`
+
+    Response body payload
+    ```json
+    {
+    "code": "TRADING|GET_ORDER|ORDER_NOT_FOUND",
+    "message": "This order_id not found"
+    }
+    ```
+
+    ### Possible errors return
+
+    Error | Description
+    ----------|-------------
+    API_UNAVAILABLE | API temporarily disabled
+    FORBIDDEN | Invalid login or password
+    INVALID_SYMBOL | {symbol} param does not exist or it's not on the BASE-QUOTE format, ex: BTC-BRL
+    INVALID_PARAMETER | Invalid parameter value
+    INSUFFICIENT_BALANCE | Insufficient balance to carry out the operation
+    ORDER_NOT_FOUND | This order_id not found
+    ADDRESS_NOT_REGISTERED | Address not registered or marked as trusted
+    PROBLEM_TRANSFERRING | Problem transferring digital currency
+    INVALID_ACCESS | Attempting to access a persistence method with a read-only key
+    ORDER_PROCESSED | This order have already been processed or canceled
+    INVALID_BANK_ACCOUNT | Bank account not registered or not marked as trusted
+    INVALID_WITHDRAWAL_VALUE | Withdrawal to savings account must be less than BRL 5000.00
+    WITHDRAWAL_AMOUNT_LIMIT | This amount exceeds the withdrawal limit of Reais for the last 24 hours
+    WITHDRAWAL_DIGITAL_AMOUNT_LIMIT | This amount exceeds the digital currency withdrawal limit for the last 24 hours
+    MINIMUM_WITHDRAWAL_AMOUNT | Minimum amount for withdrawals in Reais is R$ 50,00
+    MINIMUM_BITCOIN_TRANSFERS | Minimum value of Bitcoin transfers to external address is 0.001 BTC
+    MINIMUM_LITECOIN_TRANSFERS | Minimum value of Litecoin transfers to external address is 0.009 LTC
+    MIN_MAX_BITCOIN_EXCEEDED | Minimum or maximum amount of Bitcoin exceeded
+    MIN_MAX_LITECOIN_EXCEEDED | Minimum or maximum amount of Litecoin exceeded
+    MIN_MAX_BRL_EXCEEDED | Minimum unit price (BRL 0.01) or maximum exceeded
+    DUPLICATE_STATUS | Duplicate status
+    INVALID_STATUS_VALUE | Status value is invalid
+    INVALID_DECIMAL_PLACES | Invalid number of decimal places entered
+    PARAMETER_SIZE_LARGE | Parameter size larger than allowed
+    INVALID_TRANSFER_ID | Invalid transfer. The ID entered does not exist in your account.
+    MINIMUM_BCASH_TRANSFERS | Minimum value of transfers from BCash to external address is 0.001 BCH
+    MIN_MAX_BCASH_EXCEEDED | Minimum or maximum amount of BCash exceeded
+    MINIMUM_XRP_TRANSFERS | Minimum transfer value from XRP (Ripple) to external address is 10 XRP
+    MIN_MAX_XRP_EXCEEDED | Minimum or maximum amount of XRP exceeded
+    MINIMUM_ETHEREUM_TRANSFERS | Minimum transfer value from Ethereum to external address is 0.004 ETH
+    MIN_MAX_ETHEREUM_EXCEEDED | Minimum or maximum amount of Ethereum exceeded
+    INVALID_ADDRESS | Invalid address for transfer
+    REQUEST_RATE_EXCEEDED | Request rate exceeded the request limit in the range
+    REQUEST_DENIED | Request denied: high request rate or invalid request
+    REQUEST_BLOCKED | Requests temporarily blocked
+    ORDER_IN_PROCESSING | Your order is being processed, if there is any problem your balance will be reversed
+    ERROR_MONITOR_PRICE | Occurred unexpected error from monitor price
+    BALANCE_RESERVED_NOT_CANCELED | Balance reserved not canceled
+    ERROR_RESERVE_BALANCE | Occurred unexpected error from balance reserve
+    ERROR_LEGACY_PLACE_ORDER | Occurred unexpected error to create order
+    ERROR_PUBLISH_ORDER | Occurred unexpected error to publish order
+    INVALID_LIMIT_PRICE | Price Limit value must be less than the Stop Limit value
+    ORDER_DUPLICATE | There is already an order created
+    BALANCE_NOT_RESERVED | Balance not reserved
+    INVALID_MAX_LIMIT_PRICE | Limit price is higher than max value
+    INVALID_MIN_LIMIT_PRICE | Limit price is lower than min value
+    INVALID_MAX_QUANTITY | Quantity (volume) is higher than max value
+    INVALID_MIN_QUANTITY | Quantity (volume) is lower than min value
+    INVALID_PAIR | Base or Quote is invalid
+    INVALID_SIDE | Side must be sell on stoplimit orders
+    INVALID_STOP_PRICE | The param limitPrice cannot be higher than stopPrice
+    MISSING_FIELD | Param stopPrice cannot be empty in stoplimit orders
+
+    ### Forbidden error example
+
+    Response status code: `403`
+
+    Response body payload
+    ```json
+    {
+    "code": "API|FORBIDDEN",
+    "message": "You need to be authenticated"
+    }
+    ```
+
+    ### Internal server error example
+
+    Response status code: `500`
+
+    Response body payload
+    ```json
+    {
+    "code": "API|INTERNAL_SERVER_ERROR",
+    "message": "An unexpected error has occurred"
+    }
+    ```
+
+    # Authentication
+    ### Password Bearer
+    This flow uses login and password to authenticate a user. Username and password
+    are sent as parameters to the [/authorize](#tag/Authorize) endpoint.
+
+    The username refers to `API token id` and password to `API token secret`.
+
+    You must generate an API token id and secret on MercadoBitcoin platform. Follow this link:
+
+    https://suporte.mercadobitcoin.com.br/hc/pt-br/articles/360040781391-Como-gerar-uma-chave-de-API
+
+    If the username and password are valid, then the server issues an access token (`ACCESS_TOKEN`)
+    and returns it in the response. The access token is sent with every request in the Authorization header.
+  title: Mercado Bitcoin API
+  version: v5.9.7
+  x-logo:
+    altText: MercadoBitcoin
+    backgroundColor: '#FFFFFF'
+    url: https://static.mercadobitcoin.com.br/web/img/logos/mb/main-logo-color.svg
+paths:
+  /{asset}/fees:
+    get:
+      description: Request for asset's withdraw fee (network fee charge)
+      parameters:
+      - description: Instrument asset in the form BASE(e.g. BTC)
+        in: path
+        name: asset
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            $ref: '#/definitions/share.AssetFee'
+      summary: Get Fees From Asset
+      tags:
+      - Public Data
+  /{symbol}/orderbook:
+    get:
+      consumes:
+      - application/json
+      description: Get current orderbook (depth of market) for the instrument.
+      parameters:
+      - description: Instrument symbol in the form BASE-QUOTE(e.g. BTC-BRL)
+        in: path
+        name: symbol
+        required: true
+        type: string
+      - description: Limit of orderbook response data per side (`asks`, `bids`). Max
+          allowed 1000
+        in: path
+        name: limit
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            $ref: '#/definitions/OrderBookResponse'
+      summary: Get OrderBook
+      tags:
+      - Public Data
+  /{symbol}/trades:
+    get:
+      consumes:
+      - application/json
+      description: List trades (executions).
+      parameters:
+      - description: Instrument symbol in the form BASE-QUOTE(e.g. BTC-BRL)
+        in: path
+        name: symbol
+        required: true
+        type: string
+      - description: Trade id to find
+        in: query
+        name: tid
+        type: integer
+      - description: Since trade id to find
+        in: query
+        name: since
+        type: integer
+      - description: Unix timestamp (UTC) of the leftmost required bar. {to} is required
+        in: query
+        name: from
+        type: integer
+      - description: Unix timestamp (UTC) of the rightmost required bar. {from} is
+          required
+        in: query
+        name: to
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            items:
+              $ref: '#/definitions/TradeResponse'
+            type: array
+      summary: List Trades
+      tags:
+      - Public Data
+  /accounts:
+    get:
+      consumes:
+      - application/json
+      description: |-
+        Get a list of accounts owned by the user.
+        Usually, MercadoBitcoin works with only one default account.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            items:
+              $ref: '#/definitions/AccountResponse'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: List Accounts
+      tags:
+      - Account
+  /accounts/{accountId}/{symbol}/orders:
+    get:
+      consumes:
+      - application/json
+      description: List orders from specific market (most recent first)
+      parameters:
+      - description: Instrument symbol in the form BASE-QUOTE(e.g. BTC-BRL)
+        in: path
+        name: symbol
+        required: true
+        type: string
+      - description: Account identifier. Obtained from List Accounts
+        in: path
+        name: accountId
+        required: true
+        type: string
+      - description: 'Filter for orders with or without execution<br>Example: has_executions=true'
+        in: query
+        name: has_executions
+        type: string
+      - description: 'Order side to be filtered<br>Enum: `buy` or `sell`'
+        in: query
+        name: side
+        type: string
+      - description: 'Order status<br>Enum: `pending`, `working`, `cancelled`, `filled`'
+        in: query
+        name: status
+        type: string
+      - description: 'Filter for orders from the entered order ID<br>Example: id_from=5'
+        in: query
+        name: id_from
+        type: string
+      - description: 'Filter for orders up to the entered order ID<br>Example: id_to=12'
+        in: query
+        name: id_to
+        type: string
+      - description: 'Filter for orders created from the timestamp (UTC) entered<br>Example:
+          created_at_from=1633538771 '
+        in: query
+        name: created_at_from
+        type: string
+      - description: 'Filter for orders created up to the timestamp (UTC) entered<br>Example:
+          created_at_to=1633539132'
+        in: query
+        name: created_at_to
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            items:
+              $ref: '#/definitions/OrderResponse'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: List orders
+      tags:
+      - Trading
+    post:
+      consumes:
+      - application/json
+      description: Place a new order.
+      parameters:
+      - description: Instrument symbol in the form BASE-QUOTE(e.g. BTC-BRL)
+        in: path
+        name: symbol
+        required: true
+        type: string
+      - description: Account identifier. Obtained from List Accounts
+        in: path
+        name: accountId
+        required: true
+        type: string
+      - description: Request
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/PlaceOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            $ref: '#/definitions/PlaceOrderResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Place order
+      tags:
+      - Trading
+  /accounts/{accountId}/{symbol}/orders/{orderId}:
+    delete:
+      consumes:
+      - application/json
+      description: Cancel an existing order.
+      parameters:
+      - description: Account identifier. Obtained from List Accounts
+        in: path
+        name: accountId
+        required: true
+        type: string
+      - description: Instrument symbol in the form BASE-QUOTE(e.g. BTC-BRL)
+        in: path
+        name: symbol
+        required: true
+        type: string
+      - description: Unique order identifier
+        in: path
+        name: orderId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Cancel order
+      tags:
+      - Trading
+    get:
+      consumes:
+      - application/json
+      description: Get unique order by identifier
+      parameters:
+      - description: Instrument symbol in the form BASE-QUOTE(e.g. BTC-BRL)
+        in: path
+        name: symbol
+        required: true
+        type: string
+      - description: Account identifier. Obtained from List Accounts
+        in: path
+        name: accountId
+        required: true
+        type: string
+      - description: Unique order identifier
+        in: path
+        name: orderId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            $ref: '#/definitions/OrderResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get orders
+      tags:
+      - Trading
+  /accounts/{accountId}/balances:
+    get:
+      consumes:
+      - application/json
+      description: Get balances for all markets, including fiat, for an account
+      parameters:
+      - description: Account identifier. Obtained from List Accounts
+        in: path
+        name: accountId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            items:
+              $ref: '#/definitions/CryptoBalanceResponse'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: List Balances
+      tags:
+      - Account
+  /accounts/{accountId}/cancel_all_open_orders:
+    delete:
+      consumes:
+      - application/json
+      description: Cancel all open orders for an account.
+      parameters:
+      - description: Account identifier. Obtained from List Accounts
+        in: path
+        name: accountId
+        required: true
+        type: string
+      - description: Filter for orders with or without execution
+        in: query
+        name: has_executions
+        type: boolean
+      - description: 'Instrument symbol in the form BASE-QUOTE(e.g. BTC-BRL) <br>Example:
+          symbol=`BTC-BRL`'
+        in: query
+        name: symbol
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            $ref: '#/definitions/CancelOpenOrdersResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Cancel all open orders
+      tags:
+      - Trading
+  /accounts/{accountId}/orders:
+    get:
+      consumes:
+      - application/json
+      description: List orders from all markets (most recent first)
+      parameters:
+      - description: Account identifier. Obtained from List Accounts
+        in: path
+        name: accountId
+        required: true
+        type: string
+      - description: 'Filter for orders with or without execution<br>Example: has_executions=true'
+        in: query
+        name: has_executions
+        type: string
+      - description: 'Instrument symbol in the form BASE-QUOTE(e.g. BTC-BRL) <br>Example:
+          symbol=`BTC-BRL`'
+        in: query
+        name: symbol
+        type: string
+      - description: 'Order status<br>Example: status=`created,working,cancelled,filled`'
+        in: query
+        name: status
+        type: string
+      - description: 'Size quantity of orders to find <br>Example: size=`1`'
+        in: query
+        name: size
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            $ref: '#/definitions/ListAllOrdersResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: List all orders
+      tags:
+      - Trading
+  /accounts/{accountId}/positions:
+    get:
+      consumes:
+      - application/json
+      description: Get open positions (open orders) for an account.
+      parameters:
+      - description: Account identifier. Obtained from List Accounts
+        in: path
+        name: accountId
+        required: true
+        type: string
+      - description: Instrument symbol in the form BASE-QUOTE(e.g. BTC-BRL,LTC-BRL)
+        in: query
+        name: symbols
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            items:
+              $ref: '#/definitions/PositionResponse'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: List Positions
+      tags:
+      - Account
+  /accounts/{accountId}/wallet/{symbol}/deposits:
+    get:
+      consumes:
+      - application/json
+      description: List the deposits made by a user for a symbol. Fiat deposits not
+        included.
+      parameters:
+      - description: Account identifier. Obtained from List Accounts
+        in: path
+        name: accountId
+        required: true
+        type: string
+      - description: Instrument asset in the form BASE (e.g. BTC)
+        in: path
+        name: symbol
+        required: true
+        type: string
+      - description: Limit of results. Max 10
+        in: query
+        name: limit
+        type: string
+      - description: Pagination of deposits
+        in: query
+        name: page
+        type: string
+      - description: Unix timestamp (UTC) for the time and date from where you want
+          to list deposits
+        in: query
+        name: from
+        type: string
+      - description: Unix timestamp (UTC) for the time and date to where you want
+          to list deposits
+        in: query
+        name: to
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            items:
+              $ref: '#/definitions/share.Deposit'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: List Deposits
+      tags:
+      - Wallet
+  /accounts/{accountId}/wallet/{symbol}/withdraw:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Request for cryptocurrency or Brazilian Real currency transfer. So, if the coin field is filled
+        with "BRL", a withdraw will be made to the informed banking account. If the coin field is filled
+        with a cryptocurrency, a withdraw will be made to the informed wallet address.
+
+        <b>IMPORTANT:</b> It's only allowed the transfer to "reliable" destinations. The need to mark as
+        safe a wallet address or banking account is a security measure. For cryptocurrency transfer,
+        it's also needed email approval for the transfer. To mark a wallet address or banking account
+        as "reliable", you need to have activates the
+        ["Two-Factor Authentication (2FA)"](https://www.mercadobitcoin.com.br/twostep/) and have a
+        ["Security PIN"](https://www.mercadobitcoin.com.br/configuracoes/palavrasegura/). This feature is available
+        for all users that have an active API Trade Key.
+        You can configure reliable destinations at
+        ["Address Register"](https://www.mercadobitcoin.com.br/configuracoes/cadastro_endereco/) and/or
+        ["Banking Accounts"](https://www.mercadobitcoin.com.br/configuracoes/contasbancarias/).
+      parameters:
+      - description: Account identifier. Obtained from List Accounts
+        in: path
+        name: accountId
+        required: true
+        type: string
+      - description: Cryptocurrency or fiat, ex BTC, BRL, ETH.
+        in: path
+        name: symbol
+        required: true
+        type: string
+      - description: Request
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/WithdrawCoinRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            $ref: '#/definitions/Withdraw'
+      security:
+      - ApiKeyAuth: []
+      summary: Withdraw Coin
+      tags:
+      - Wallet
+  /accounts/{accountId}/wallet/{symbol}/withdraw/{withdrawId}:
+    get:
+      consumes:
+      - application/json
+      description: Get withdraw by coin and id.
+      parameters:
+      - description: Account identifier. Obtained from List Accounts
+        in: path
+        name: accountId
+        required: true
+        type: string
+      - description: Instrument symbol in the form BASE or QUOTE
+        in: path
+        name: symbol
+        required: true
+        type: string
+      - description: Withdraw identifier to find
+        in: path
+        name: withdrawId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            $ref: '#/definitions/Withdraw'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Withdraw Coin
+      tags:
+      - Wallet
+  /authorize:
+    post:
+      consumes:
+      - application/json
+      description: Username and password authentication.
+      parameters:
+      - description: Request
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/AuthorizeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            $ref: '#/definitions/AuthorizeResponse'
+      summary: Authorize user to access
+      tags:
+      - Authorize
+  /candles:
+    get:
+      consumes:
+      - application/json
+      description: Request for history bars (candles).
+      parameters:
+      - description: Instrument symbol in the form BASE-QUOTE(e.g. BTC-BRL)
+        in: query
+        name: symbols
+        required: true
+        type: string
+      - description: 15m, 1h, 3h, 1d, 1w, 1M(for months)
+        in: query
+        name: resolution
+        required: true
+        type: string
+      - description: Unix timestamp (UTC) of the leftmost required bar
+        in: query
+        name: from
+        type: integer
+      - description: Unix timestamp (UTC) of the rightmost required bar, including
+          to. It can be in the future. In this case, the rightmost required bar is
+          the latest available bar.
+        in: query
+        name: to
+        required: true
+        type: integer
+      - description: Number of bars (higher priority than from) starting with to.
+          If countback is set, from will be ignored.
+        in: query
+        name: countback
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            $ref: '#/definitions/prspublicdata.ListCandlesResponse'
+      summary: List Candles
+      tags:
+      - Public Data
+  /symbols:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all instruments.
+      parameters:
+      - description: Instrument symbol in the form BASE-QUOTE(e.g. BTC-BRL,LTC-BRL)
+        in: query
+        name: symbols
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            items:
+              $ref: '#/definitions/prspublicdata.ListSymbolInfoResponse'
+            type: array
+      summary: List Symbols
+      tags:
+      - Public Data
+  /tickers:
+    get:
+      consumes:
+      - application/json
+      description: Get current prices of the instrument.
+      parameters:
+      - description: Instrument symbol in the form BASE-QUOTE(e.g. BTC-BRL,LTC-BRL)
+        in: query
+        name: symbols
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response
+          schema:
+            items:
+              $ref: '#/definitions/TickerResponse'
+            type: array
+      summary: List Tickers
+      tags:
+      - Public Data
+swagger: "2.0"
