@@ -1,65 +1,213 @@
 basePath: /api/v4
 definitions:
+  execBuyError:
+    properties:
+      code:
+        type: integer
+        description: error code generated when trying to perform the request
+        example: 4
+      message:
+        description: Error message generated when trying to perform the request
+        type: string
+        example: "Internal Server Error (quotes_buy_not_found)"
+    type: object
+  execSellError:
+    properties:
+      code:
+        type: integer
+        description: error code generated when trying to perform the request
+        example: 4
+      message:
+        description: Error message generated when trying to perform the request
+        type: string
+        example: "Internal Server Error (quotes_sell_not_found)"
+    type: object
   httputil.HTTPError:
     properties:
       code:
-        example: 4
         type: integer
         description: error code generated when trying to perform the request
+        example: 4
       message:
         description: Error message generated when trying to perform the request
-        example: "Internal Server Error (error when searching for quotation: LTC)"
         type: string
+        example: "Internal Server Error (error when searching for quotation: LTC)"
     type: object
-  schema.QuoteBuyRequestSchema:
+  schema.QuoteFiatRequestSchema:
     properties:
       coin:
         type: string
-        example: LTC
         description: Symbol of the cryptocurrency to be quoted
+        example: LTC
       fiat_amount:
         type: string
-        example: "100"
-        description: Amount of fiat currency BRL for quotation
+        description: Amount of fiat currency BRL to quote
+        example: "18810"
       source:
         type: string
-        example: web
         description: Request source (web/ios/android)
+        example: web
     required:
     - coin
     - fiat_amount
     - source
     type: object
+  schema.ExecRequestSchema:
+    properties:
+      coin:
+        type: string
+        description: Symbol of the cryptocurrency 
+        example: LTC
+      source:
+        type: string
+        description: Request source (web/ios/android)
+        example: web
+    required:
+    - coin
+    - source
+    type: object
+  schema.QuoteCryptoRequestSchema:
+    properties:
+      coin:
+        type: string
+        description: Symbol of the cryptocurrency to be quoted 
+        example: LTC
+      crypto_amount:
+        type: string
+        description: Amount of cryptocurrency to quote
+        example: "100"
+      source:
+        type: string
+        description: Request source (web/ios/android)
+        example: web
+    required:
+    - coin
+    - source
+    - crypto_amount
+    type: object
+  schema.OrderExecResponse:
+    properties:
+      orderId:
+        description: Order identifier
+        type: string
+        example: 01GCM0B3XR2R4CBBA37MFQ8QZK
+    type: object
   schema.QuoteBuyResponseSchema:
     properties:
       id:
         type: integer
-        example: 33
         description: Quotation record identifier
+        example: 33
       coin:
         type: string
-        example: "LTC"
         description: Symbol of the quoted cryptocurrency
+        example: "LTC"
       coin_price:
         type: string
-        example: "102.04081632"
         description: Cryptocurrency unit value against fiat BRL
+        example: "102.04081632"
       fiat_amount:
         type: string
-        example: "100"
         description: Amount quoted of fiat currency BRL
+        example: "100"
       fee_fiat_amount:
         type: string
-        example: "0.99"
         description: Fee amount in fiat BRL over the quoted amount
+        example: "0.99"
       fiat_amount_with_fee:
         type: string
-        example: "99.01"
         description: Amount in fiat BRL already taxed
+        example: "99.01"
       estimated_coin_amount:
         type: string
-        example: "0.970298"
         description: Estimated value in conversion from fiat BRL to the specified cryptocurrency
+        example: "0.970298"
+    type: object
+  schema.QuoteSellResponseSchema:
+    properties:
+      id:
+        type: integer
+        description: Quotation record identifier
+        example: 33
+      coin:
+        type: string
+        description: Symbol of the quoted cryptocurrency
+        example: "LTC"
+      coin_price:
+        type: string
+        description: Cryptocurrency unit value against fiat BRL
+        example: "102.04081632"
+      crypto_amount:
+        type: string
+        description: Quoted amount of cryptocurrency
+        example: "100"
+      fee_crypto_amount:
+        type: string
+        description: Fee value in cryptocurrency on the quoted amount
+        example: "0.7"
+      crypto_amount_with_fee:
+        type: string
+        description: Amount in cryptocurrency already taxed
+        example: "99.3"
+      fiat_amount": 
+        type: string
+        description: Amount in fiat BRL over the amount of quoted cryptocurrency
+        example: ""
+      fee_fiat_amount": 
+        type: string
+        description: Fee amount in fiat currency
+        example: ""
+      fiat_amount_with_fee": 
+        type: string
+        description: Amount of fiat currency BRL already taxed
+        example: ""
+      estimated_fiat_amount": 
+        type: string
+        description: Estimated value of conversion in fiat BRL
+        example: "18810"
+    type: object
+  schema.QuoteSellBrlResponseSchema:
+    properties:
+      id:
+        type: integer
+        description: Quotation record identifier
+        example: 33
+      coin:
+        type: string
+        description: Symbol of the quoted cryptocurrency
+        example: "LTC"
+      coin_price:
+        type: string
+        description: Cryptocurrency unit value against fiat BRL
+        example: "102.04081632"
+      crypto_amount:
+        type: string
+        description: Amount of cryptocurrency equivalent to the amount of quoted fiat currency
+        example: "100"
+      fee_crypto_amount:
+        type: string
+        description: Fee value in cryptocurrency on the quoted amount
+        example: "0.7"
+      crypto_amount_with_fee:
+        type: string
+        description: Amount in cryptocurrency already taxed
+        example: "99.3"
+      fiat_amount": 
+        type: string
+        description: Amount of fiat currency equivalent to the amount of quoted cryptocurrency
+        example: "18810"
+      fee_fiat_amount": 
+        type: string
+        description: Fee amount in fiat currency
+        example: "131.67"
+      fiat_amount_with_fee": 
+        type: string
+        description: Amount of fiat currency BRL already taxed
+        example: "18678.3"
+      estimated_fiat_amount": 
+        type: string
+        description: Estimated value of conversion in fiat BRL
+        example: "18810"
     type: object
 info:
   contact:
@@ -174,7 +322,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/schema.QuoteBuyRequestSchema'
+          $ref: '#/definitions/schema.QuoteFiatRequestSchema'
       produces:
       - application/json
       responses:
@@ -187,5 +335,102 @@ paths:
           schema:
             $ref: '#/definitions/httputil.HTTPError'
       summary: Quote Buy
+      tags:
+      - Buy
+
+  /user/{user_hash}/quote/buy/exec:
+    post:
+      parameters:
+      - description: Request template
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.ExecRequestSchema'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/schema.OrderExecResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/execBuyError'
+      summary: Exec Buy Order Pre-Trading
+      tags:
+      - Buy
+
+  /user/{user_hash}/quote/sell:
+    post:
+      parameters:
+      - description: Request template
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.QuoteCryptoRequestSchema'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.QuoteSellResponseSchema'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Quote Sell
+      tags:
+      - Sell
+
+  /user/{user_hash}/quote/sell/brl:
+    post:
+      parameters:
+      - description: Request template
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.QuoteFiatRequestSchema'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.QuoteSellBrlResponseSchema'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Quote Sell Fiat BRL
+      tags:
+      - Sell
+  /user/{user_hash}/quote/sell/exec:
+    post:
+      parameters:
+      - description: Request template
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.ExecRequestSchema'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/schema.OrderExecResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/execSellError'
+      summary: Exec Sell Order Pre-Trading
+      tags:
+      - Sell
 
 swagger: "2.0"
