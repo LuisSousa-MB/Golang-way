@@ -17,6 +17,6 @@ services:
       PGADMIN_DEFAULT_EMAIL: "gui@alura.com"
       PGADMIN_DEFAULT_PASSWORD: "123456"
     ports:
-      - "54321:80"
+      - "54322:80"
     depends_on:
       - postgres

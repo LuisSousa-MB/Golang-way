@@ -33,7 +33,7 @@ definitions:
         type: string
         example: "Internal Server Error (error when searching for quotation: LTC)"
     type: object
-  schema.QuoteFiatRequestSchema:
+  QuoteFiatRequestSchema:
     properties:
       coin:
         type: string
@@ -52,7 +52,7 @@ definitions:
     - fiat_amount
     - source
     type: object
-  schema.ExecRequestSchema:
+  ExecRequestSchema:
     properties:
       coin:
         type: string
@@ -66,7 +66,7 @@ definitions:
     - coin
     - source
     type: object
-  schema.QuoteCryptoRequestSchema:
+  QuoteCryptoRequestSchema:
     properties:
       coin:
         type: string
@@ -85,14 +85,14 @@ definitions:
     - source
     - crypto_amount
     type: object
-  schema.OrderExecResponse:
+  OrderExecResponse:
     properties:
       orderId:
         description: Order identifier
         type: string
         example: 01GCM0B3XR2R4CBBA37MFQ8QZK
     type: object
-  schema.QuoteBuyResponseSchema:
+  QuoteBuyResponseSchema:
     properties:
       id:
         type: integer
@@ -123,7 +123,7 @@ definitions:
         description: Estimated value in conversion from fiat BRL to the specified cryptocurrency
         example: "0.970298"
     type: object
-  schema.QuoteSellResponseSchema:
+  QuoteSellResponseSchema:
     properties:
       id:
         type: integer
@@ -166,7 +166,7 @@ definitions:
         description: Estimated value of conversion in fiat BRL
         example: "18810"
     type: object
-  schema.QuoteSellBrlResponseSchema:
+  QuoteSellBrlResponseSchema:
     properties:
       id:
         type: integer
@@ -290,18 +290,14 @@ info:
     ```
 
     # Authentication
-    ### Password Bearer
-    This flow uses login and password to authenticate a user. Username and password
-    are sent as parameters to the [/authorize](#tag/Authorize) endpoint.
+    Authentication is based on the user-hash generated after user login authentication.
+    All endpoints of this API use the user-hash parameter in their composition.
 
-    The username refers to `API token id` and password to `API token secret`.
+    ### Endpoint
 
-    You must generate an API token id and secret on MercadoBitcoin platform. Follow this link:
+    All requests is made with /api/v4 context:
+    #### /api/v4/user/{user_hash}
 
-    https://suporte.mercadobitcoin.com.br/hc/pt-br/articles/360040781391-Como-gerar-uma-chave-de-API
-
-    If the username and password are valid, then the server issues an access token (`ACCESS_TOKEN`)
-    and returns it in the response. The access token is sent with every request in the Authorization header.
   title: Caronte API
   version: 1.1.0
   x-logo:
@@ -322,14 +318,14 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/schema.QuoteFiatRequestSchema'
+          $ref: '#/definitions/QuoteFiatRequestSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/schema.QuoteBuyResponseSchema'
+            $ref: '#/definitions/QuoteBuyResponseSchema'
         "400":
           description: Bad Request
           schema:
@@ -346,14 +342,14 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/schema.ExecRequestSchema'
+          $ref: '#/definitions/ExecRequestSchema'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/schema.OrderExecResponse'
+            $ref: '#/definitions/OrderExecResponse'
         "400":
           description: Bad Request
           schema:
@@ -370,14 +366,14 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/schema.QuoteCryptoRequestSchema'
+          $ref: '#/definitions/QuoteCryptoRequestSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/schema.QuoteSellResponseSchema'
+            $ref: '#/definitions/QuoteSellResponseSchema'
         "400":
           description: Bad Request
           schema:
@@ -394,14 +390,14 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/schema.QuoteFiatRequestSchema'
+          $ref: '#/definitions/QuoteFiatRequestSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/schema.QuoteSellBrlResponseSchema'
+            $ref: '#/definitions/QuoteSellBrlResponseSchema'
         "400":
           description: Bad Request
           schema:
@@ -417,14 +413,14 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/schema.ExecRequestSchema'
+          $ref: '#/definitions/ExecRequestSchema'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/schema.OrderExecResponse'
+            $ref: '#/definitions/OrderExecResponse'
         "400":
           description: Bad Request
           schema:

@@ -22,7 +22,9 @@ func HandleRequests() {
 	}
 
 	r := gin.New()
+
 	docs.SwaggerInfo.BasePath = "/"
+
 	r.LoadHTMLGlob("templates/*")
 	r.Static("/assets", "./assets")
 	r.GET("/alunos", ctrl.ExibeTodosAlunos)
@@ -37,9 +39,11 @@ func HandleRequests() {
 	r.GET("/docx", ctrl.ExibeDocs)
 	r.GET("/swagger", ctrl.ExibeJson)
 
+	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json")
+
 	//r.NoRoute(ctrl.Limbo)
 	r.Use(ginredoc.New(doc))
 
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler, url))
 	r.Run()
 }
